@@ -315,6 +315,8 @@ struct _GstNvInferOnnx
     // Host buffer to store RGB data for use by algorithm
     void *host_rgb_buf;
     mirror::Aligner aligner;
+    float *cpuBuffers;
+
 };
 
 /* GStreamer boilerplate. */
