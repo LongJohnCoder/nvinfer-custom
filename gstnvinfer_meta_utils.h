@@ -12,18 +12,18 @@
 #include "gstnvinfer.h"
 #include "gstnvinfer_impl.h"
 
-void attach_metadata_detector (GstNvInferOnnx * nvinfer, GstMiniObject * tensor_out_object,
-        GstNvInferOnnxFrame & frame, NvDsInferDetectionOutput & detection_output);
+void attach_metadata_detector (GstNvinfercustom * nvinfer, GstMiniObject * tensor_out_object,
+        GstNvinfercustomFrame & frame, NvDsInferDetectionOutput & detection_output);
 
-void attach_metadata_classifier (GstNvInferOnnx * nvinfer, GstMiniObject * tensor_out_object,
-        GstNvInferOnnxFrame & frame, GstNvInferOnnxObjectInfo & object_info);
+void attach_metadata_classifier (GstNvinfercustom * nvinfer, GstMiniObject * tensor_out_object,
+        GstNvinfercustomFrame & frame, GstNvinfercustomObjectInfo & object_info);
 
-void merge_classification_output (GstNvInferOnnxObjectHistory & history,
-    GstNvInferOnnxObjectInfo  &new_result);
+void merge_classification_output (GstNvinfercustomObjectHistory & history,
+    GstNvinfercustomObjectInfo  &new_result);
 
-void attach_metadata_segmentation (GstNvInferOnnx * nvinfer, GstMiniObject * tensor_out_object,
-        GstNvInferOnnxFrame & frame, NvDsInferSegmentationOutput & segmentation_output);
+void attach_metadata_segmentation (GstNvinfercustom * nvinfer, GstMiniObject * tensor_out_object,
+        GstNvinfercustomFrame & frame, NvDsInferSegmentationOutput & segmentation_output);
 
 /* Attaches the raw tensor output to the GstBuffer as metadata. */
-void attach_tensor_output_meta (GstNvInferOnnx *nvinfer, GstMiniObject * tensor_out_object,
-        GstNvInferOnnxBatch *batch, NvDsInferContextBatchOutput *batch_output);
+void attach_tensor_output_meta (GstNvinfercustom *nvinfer, GstMiniObject * tensor_out_object,
+        GstNvinfercustomBatch *batch, NvDsInferContextBatchOutput *batch_output);

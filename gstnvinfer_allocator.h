@@ -44,20 +44,20 @@ typedef struct
 #endif
   /** Vector of pointer to individual frame memories in the batch memory */
   std::vector<void *> frame_memory_ptrs;
-} GstNvInferOnnxMemory;
+} GstNvinfercustomMemory;
 
 /**
- * Get GstNvInferOnnxMemory structure associated with buffer allocated using
- * GstNvInferOnnxAllocator.
+ * Get GstNvinfercustomMemory structure associated with buffer allocated using
+ * GstNvinfercustomAllocator.
  *
  * @param buffer GstBuffer allocated by this allocator.
  *
- * @return Pointer to the associated GstNvInferOnnxMemory structure
+ * @return Pointer to the associated GstNvinfercustomMemory structure
  */
-GstNvInferOnnxMemory *gst_nvinfer_buffer_get_memory (GstBuffer * buffer);
+GstNvinfercustomMemory *gst_nvinfer_buffer_get_memory (GstBuffer * buffer);
 
 /**
- * Create a new GstNvInferOnnxAllocator with the given parameters.
+ * Create a new GstNvinfercustomAllocator with the given parameters.
  *
  * @param width Width of the network input, in pixels.
  * @param height Height of the network input, in pixels.
@@ -65,7 +65,7 @@ GstNvInferOnnxMemory *gst_nvinfer_buffer_get_memory (GstBuffer * buffer);
  * @param batch_size Max size of batch that will be inferred.
  * @param gpu_id ID of the gpu where the batch memory will be allocated.
  *
- * @return Pointer to the GstNvInferOnnxAllocator structure cast as GstAllocator
+ * @return Pointer to the GstNvinfercustomAllocator structure cast as GstAllocator
  */
 GstAllocator *gst_nvinfer_allocator_new (guint width, guint height,
     NvBufSurfaceColorFormat color_format, guint batch_size, guint gpu_id);

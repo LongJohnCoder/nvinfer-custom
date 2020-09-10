@@ -33,8 +33,8 @@ get_element_size (NvDsInferDataType data_type)
  * Attach metadata for the detector. We will be adding a new metadata.
  */
 void
-attach_metadata_detector (GstNvInferOnnx * nvinfer, GstMiniObject * tensor_out_object,
-    GstNvInferOnnxFrame & frame, NvDsInferDetectionOutput & detection_output)
+attach_metadata_detector (GstNvinfercustom * nvinfer, GstMiniObject * tensor_out_object,
+    GstNvinfercustomFrame & frame, NvDsInferDetectionOutput & detection_output)
 {
   static gchar font_name[] = "Serif";
   NvDsObjectMeta *obj_meta = NULL;
@@ -48,7 +48,7 @@ attach_metadata_detector (GstNvInferOnnx * nvinfer, GstMiniObject * tensor_out_o
    * bnounding boxes. */
   for (guint i = 0; i < detection_output.numObjects; i++) {
     NvDsInferObject & obj = detection_output.objects[i];
-    GstNvInferOnnxDetectionFilterParams & filter_params =
+    GstNvinfercustomDetectionFilterParams & filter_params =
         (*nvinfer->perClassDetectionFilterParams)[obj.classIndex];
 
     /* Scale the bounding boxes proportionally based on how the object/frame was
@@ -106,7 +106,7 @@ attach_metadata_detector (GstNvInferOnnx * nvinfer, GstMiniObject * tensor_out_o
       rect_params.has_bg_color = 0;
       rect_params.border_color = (NvOSD_ColorParams) {1, 0, 0, 1};
     } else {
-      GstNvInferOnnxColorParams &color_params =
+      GstNvinfercustomColorParams &color_params =
           (*nvinfer->perClassColorParams)[obj.classIndex];
       rect_params.has_bg_color = color_params.have_bg_color;
       rect_params.bg_color = color_params.bg_color;
@@ -139,8 +139,8 @@ attach_metadata_detector (GstNvInferOnnx * nvinfer, GstMiniObject * tensor_out_o
  * frames, need to attach a new metadata. Assume only one label per object is generated.
  */
 void
-attach_metadata_classifier (GstNvInferOnnx * nvinfer, GstMiniObject * tensor_out_object,
-    GstNvInferOnnxFrame & frame, GstNvInferOnnxObjectInfo & object_info)
+attach_metadata_classifier (GstNvinfercustom * nvinfer, GstMiniObject * tensor_out_object,
+    GstNvinfercustomFrame & frame, GstNvinfercustomObjectInfo & object_info)
 {
   NvDsObjectMeta *object_meta = frame.obj_meta;
   NvDsBatchMeta *batch_meta = (nvinfer->process_full_frame) ?
@@ -248,8 +248,8 @@ attach_metadata_classifier (GstNvInferOnnx * nvinfer, GstMiniObject * tensor_out
  * just uses the latest results.
  */
 void
-merge_classification_output (GstNvInferOnnxObjectHistory & history,
-    GstNvInferOnnxObjectInfo &new_result)
+merge_classification_output (GstNvinfercustomObjectHistory & history,
+    GstNvinfercustomObjectInfo &new_result)
 {
   history.cached_info.attributes.assign (new_result.attributes.begin (),
       new_result.attributes.end ());
@@ -288,8 +288,8 @@ copy_segmentation_meta (gpointer data, gpointer user_data)
 }
 
 void
-attach_metadata_segmentation (GstNvInferOnnx * nvinfer, GstMiniObject * tensor_out_object,
-    GstNvInferOnnxFrame & frame, NvDsInferSegmentationOutput & segmentation_output)
+attach_metadata_segmentation (GstNvinfercustom * nvinfer, GstMiniObject * tensor_out_object,
+    GstNvinfercustomFrame & frame, NvDsInferSegmentationOutput & segmentation_output)
 {
   NvDsBatchMeta *batch_meta = (nvinfer->process_full_frame) ?
     frame.frame_meta->base_meta.batch_meta : frame.obj_meta->base_meta.batch_meta;
@@ -331,17 +331,17 @@ release_tensor_output_meta (gpointer data, gpointer user_data)
 
 /* Attaches the raw tensor output to the GstBuffer as metadata. */
 void
-attach_tensor_output_meta (GstNvInferOnnx *nvinfer, GstMiniObject * tensor_out_object,
-    GstNvInferOnnxBatch *batch, NvDsInferContextBatchOutput *batch_output)
+attach_tensor_output_meta (GstNvinfercustom *nvinfer, GstMiniObject * tensor_out_object,
+    GstNvinfercustomBatch *batch, NvDsInferContextBatchOutput *batch_output)
 {
   NvDsBatchMeta *batch_meta = (nvinfer->process_full_frame) ?
       batch->frames[0].frame_meta->base_meta.batch_meta :
       batch->frames[0].obj_meta->base_meta.batch_meta;
 
   /* Create and attach NvDsInferTensorMeta for each frame/object. Also
-   * increment the refcount of GstNvInferOnnxTensorOutputObject. */
+   * increment the refcount of GstNvinfercustomTensorOutputObject. */
   for (size_t j = 0; j < batch->frames.size(); j++) {
-    GstNvInferOnnxFrame &frame = batch->frames[j];
+    GstNvinfercustomFrame &frame = batch->frames[j];
     NvDsInferTensorMeta *meta = new NvDsInferTensorMeta;
     meta->unique_id = nvinfer->unique_id;
     meta->num_output_layers = nvinfer->output_layers_info->size ();
